@@ -1,4 +1,5 @@
 import express from 'express';
+import { PORT } from './config';
 
 const app = express();
 
@@ -8,9 +9,8 @@ app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
     res.send('Welcome to my blog');
-})
+});
 
-app.listen(8000, () => {
-    console.log('Listening on PORT 8000');
-})
-
+app.listen(PORT, () => {
+    console.log(`Listening on PORT ${PORT}`);
+});
