@@ -1,0 +1,23 @@
+{
+  "name": "medium-blog",
+  "version": "1.0.0",
+  "description": "This is a blog inspired by medium",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon -r esm server.js",
+    "start": "node -r esm server.js"
+  },
+  "author": "Shobhan Srivastava",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "esm": "^3.2.25",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.40.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "nodemon": "^2.0.22"
+  }
+}
