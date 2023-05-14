@@ -1,2 +1,2 @@
-export { default as adminRouter } from './admin/adminRoutes';
-export { default as apiRouter } from './blog/blogRoutes';
+export { default as AdminRouter } from './admin/adminRoutes';
+export { default as BlogRouter } from './blog/blogRoutes';
