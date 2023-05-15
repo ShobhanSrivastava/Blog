@@ -5,58 +5,64 @@ import { blogValidator } from '../validators';
 
 const blogController = {
     async createBlog(req, res, next) {
-        //Order Validation
+        //Blog Validation
+        const { error } = blogValidator.validate(req.body);
+
+        if(error){
+            console.log('validation error');
+            return next(CustomErrorHandler.blogValidationError(error.message));
+        }
+        //Validation Successful
+
+        // Extract the title, content and author from the request body
+        const { title, content } = req.body;
+
+        // Prepare the blog model
+        const blog = new Blog({
+            title,
+            content, 
+            author: req.user.name, 
+            likes: 0,
+        });
+
+        // Save the blog in the database
+        try{
+            const result = await blog.save();
+            if(result){
+                res.json(result).status(200);
+                console.log(result);
+                return next();
+            }
+        }
+        catch(err){
+            console.log(err);
+            return next(err);
+        }
+    },
+
+    async updateBlog(req, res, next) {
+        console.log("Inside updateBlog");
+        //Validation
         const { error } = blogValidator.validate(req.body);
 
         if(error){
             return next(CustomErrorHandler.blogValidationError(error.message));
         }
-        //Validation Successful
-
-        const { title, content, author } = req.body;
-
-        const blog = new Blog({
-            title,
-            content, 
-            author, 
-            likes: 0,
-        });
-
-        try{
-            const result = await order.save();
-            if(result){
-                res.json(result).status(200);
-                return next();
-            }
-        }
-        catch(err){
-            return next(err);
-        }
-    },
-
-    async updateOrder(req, res, next) {
-        console.log("Inside updateOrder");
-        //Validation
-        const { error } = orderSchema.validate(req.body);
-
-        if(error){
-            return next(CustomErrorHandler.orderValidationError(error.message));
-        }
         //Validation Success
 
         console.log("Validation Successful");
 
-        const { status } = req.body;
+        const { title, content } = req.body;
 
         try{
-            const result = await Order.findById({_id: req.params.id});
+            const result = await Blog.findById({_id: req.params.id});
 
             if(!result){
-                return next(CustomErrorHandler.orderNotExists());
+                return next(CustomErrorHandler.blogNotExists());
             }
 
-            const update = await Order.findByIdAndUpdate({_id: result._id }, {
-                status,
+            const update = await Blog.findByIdAndUpdate({_id: result._id }, {
+                title, content,
             }, {new: true});
 
             console.log(update);
@@ -72,16 +78,17 @@ const blogController = {
         }
     },
 
-    async getOrder(req, res, next) {
+    async getBlog(req, res, next) {
         const _id = req.params.id;
 
         try{
-            const order = await Order.findById({_id});
-            if(order){
-                res.json(order).status(200);
+            const blog = await Blog.findById({_id});
+            if(blog){
+                const { title, content, author } = blog;
+                res.render('Blog', { title, content, author });
             }
             else{
-                return next(CustomErrorHandler.orderNotExists);
+                return next(CustomErrorHandler.blogNotExists);
             }
         }
         catch(err){
@@ -89,11 +96,12 @@ const blogController = {
         }
     },
 
-    async getAllOrders(req, res, next) {
+    async getAllBlogs(req, res, next) {
         try {
-            const allOrders = await Order.find().sort({"createdAt":-1});
-            if(allOrders){
-                res.json(allOrders).status(200);
+            const allBlogs = await Blog.find();
+            if(allBlogs){
+                // res.json(allOrders).status(200);
+                res.render('Home', { blogs: allBlogs, loggedIn: false });
             }
         }
         catch(err){
@@ -102,4 +110,4 @@ const blogController = {
     }
 }
 
-export default orderController;
+export default blogController;

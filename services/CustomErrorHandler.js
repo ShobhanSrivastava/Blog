@@ -9,6 +9,10 @@ class CustomErrorHandler extends Error {
         return new CustomErrorHandler(409, message);
     }
 
+    static dataValidationError(message = 'User Details incorrect. Please check the credentials') {
+        return new CustomErrorHandler(401, message);
+    }
+
     static noSuchUserExists(message = 'No such user Exists. Please register yourself') {
         return new CustomErrorHandler(401, message);
     }
@@ -27,6 +31,10 @@ class CustomErrorHandler extends Error {
 
     static blogValidationError(message = 'Blog values not specified') {
         return new CustomErrorHandler(401, message);
+    }
+
+    static blogNotExists(message = 'Blog does not exist') {
+        return new CustomErrorHandler(404, message);
     }
 }
 

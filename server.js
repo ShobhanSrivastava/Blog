@@ -4,6 +4,7 @@ import path from 'path';
 import { PORT, TINY_KEY, DB_CONN } from './config';
 
 import { BlogRouter, AdminRouter } from './routes';
+import { errorHandler } from './middlewares';
 
 const app = express();
 
@@ -26,15 +27,7 @@ app.get('/create', (req, res) => {
 
 app.use('/', BlogRouter);
 
-// app.get('/', (req, res) => {
-//     const data = {
-//         title: 'Dummy Title',
-//         content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem officiis cupiditate consectetur laboriosam fugit, ipsa dignissimos debitis molestias ea illum optio velit harum architecto hic aspernatur ipsam! Odio, impedit? Blanditiis, nostrum esse.',
-//         author: 'Shobhan Srivastava',
-//     };
-
-//     res.render('Blog', { pageTitle: data.title, content: data.content, author: data.author });
-// });
+app.use(errorHandler);
 
 app.listen(PORT, () => {
     console.log(`Listening on PORT ${PORT}`);

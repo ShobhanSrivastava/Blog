@@ -51,8 +51,8 @@ const registerController = {
         try {
             const result = await user.save();
             console.log(result);
-            accessToken = JwtService.sign({ _id: result._id, role: result.role });
-            refreshToken = JwtService.sign({ _id: result._id, role: result.role }, '1y', REFRESH_SECRET);
+            accessToken = JwtService.sign({ _id: result._id, role: result.role, name: result.name });
+            refreshToken = JwtService.sign({ _id: result._id, role: result.role, name: result.name }, '1y', REFRESH_SECRET);
 
             await RefreshToken.create({
                 token: refreshToken,

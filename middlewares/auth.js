@@ -14,7 +14,8 @@ const auth = async (req, res, next) => {
         const { _id, role } = JwtService.verify(token);
         const user = {
             _id,
-            role,
+            name,
+            role
         }
         
         req.user = user;
